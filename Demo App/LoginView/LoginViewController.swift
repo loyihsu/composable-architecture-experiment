@@ -14,6 +14,21 @@ class LoginViewController: UIViewController {
     private let viewStore: ViewStore<LoginState, LoginAction>
     private var cancellable: Cancellable?
 
+    private lazy var usernameTextField: UITextField = {
+        let textfield = UITextField()
+        textfield.placeholder = "Username"
+        textfield.autocorrectionType = .no
+        textfield.autocapitalizationType = .none
+        return textfield
+    }()
+
+    private lazy var passwordTextField: UITextField = {
+        let textfield = UITextField()
+        textfield.placeholder = "Password"
+        textfield.isSecureTextEntry = true
+        return textfield
+    }()
+
     private lazy var loginButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.systemBlue, for: .normal)
@@ -24,6 +39,9 @@ class LoginViewController: UIViewController {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.spacing = 12
+        stackView.addArrangedSubview(usernameTextField)
+        stackView.addArrangedSubview(passwordTextField)
         stackView.addArrangedSubview(loginButton)
         return stackView
     }()
@@ -64,12 +82,19 @@ class LoginViewController: UIViewController {
         view.addSubview(stackView)
 
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.left.right.equalToSuperview()
+                .inset(15)
+            $0.center.equalToSuperview()
         }
     }
 
     @objc func loginButtonTapped() {
-        self.viewStore.send(.loginButtonTapped(username: "abc", password: "123456"))
+        self.viewStore.send(
+            .loginButtonTapped(
+                username: usernameTextField.text ?? "",
+                password: passwordTextField.text ?? ""
+            )
+        )
     }
 
     private func setupNextScreen() {

@@ -9,7 +9,9 @@ import ComposableArchitecture
 import CombineMoya
 import Moya
 
-fileprivate let moyaProvider = MoyaProvider<MemberAPI>(stubClosure: MoyaProvider.immediatelyStub)
+fileprivate let moyaProvider = MoyaProvider<MemberAPI>(
+    stubClosure: MoyaProvider.immediatelyStub
+)
 
 struct LoginState: Equatable, Identifiable {
     let id = UUID()
@@ -27,7 +29,10 @@ struct LoginEnvironment {
 
     var login: (String, String) -> Effect<Response, MoyaError> = { username, password in
         return moyaProvider.requestPublisher(
-            .login(username: username, password: password),
+            .login(
+                username: username,
+                password: password
+            ),
             callbackQueue: .global(qos: .background)
         ).eraseToEffect()
     }
