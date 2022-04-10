@@ -68,7 +68,7 @@ class LoginViewController: UIViewController {
             case .success:
                 self?.setupNextScreen()
             case .failure(let error):
-                print(error)
+                self?.createAlert(error)
             case .none:
                 break
             }
@@ -99,6 +99,20 @@ class LoginViewController: UIViewController {
 
     private func setupNextScreen() {
         print("Setting up next screen...")
+    }
+
+    private func createAlert(_ error: LocalizedError) {
+        let alertController = UIAlertController(
+            title: "Something went wrong.",
+            message: error.errorDescription,
+            preferredStyle: .alert
+        )
+
+        alertController.addAction(
+            UIAlertAction(title: "OK", style: .cancel)
+        )
+
+        self.present(alertController, animated: true)
     }
 }
 
